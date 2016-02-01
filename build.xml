@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project>
+  <property name="source.dir" location="src"/>
+  <property name="build.dir" location="class"/>
+  <property name="doc.dir" location="docs/api"/>
+  <property name="target.dir" location="target"/>
+  <property name="test.classes.dir" location="test"/>
+  <path id="external.classpath">
+	  <pathelement location="vert.x-3.0.0/lib/jackson-annotations-3.2.0.jar"/>
+  </path>
+
+  <target name="target-build" description="Compile java sources">
+  	<mkdir dir="${build.dir}"/>
+    <javac srcdir="${source.dir}" destdir="${build.dir}">
+    	<classpath>
+    	   <path refid="external.classpath"/>
+    	</classpath>
+    </javac>
+  </target>
+  	
+  <target name="target-clean" description="Clean compiled files and JavaDoc">
+    <delete dir="${build.dir}"/>
+    <delete dir="${doc.dir}"/>
+  	<mkdir dir="${build.dir}"/>
+  	<mkdir dir="${doc.dir}"/>
+  </target>
+
+  <target name="target-javadoc" description="Generate the JavaDoc">
+    <javadoc sourcepath="${source.dir}" destdir="${doc.dir}"/>
+  </target>
+	
+	<target name="target-jar">
+	   <mkdir dir="${target.dir}"/>
+	       <jar destfile="${target.dir}/CrazyFlie_Web_CLient.jar" basedir="${build.dir}">
+	       	<manifest>
+	       		<attribute name="Main-Class" value="com.dronebucket.main.Main"/>
+	        </manifest>
+	       	<zipgroupfileset dir="lib">
+	       		<include name="*.jar"/>
+	       	</zipgroupfileset>
+	       	<zipgroupfileset dir="vert.x-3.0.0/lib">
+	       		<include name="*.jar"/>
+	        </zipgroupfileset>
+	       </jar>
+	</target>
+	
+	<target name="target-junit" depends="target-build">
+
+	    <junit printsummary="yes" haltonfailure="no">
+
+		<!-- Project classpath, must include junit.jar -->
+		<classpath refid="test.path" />
+			
+		<!-- test class -->
+		<classpath location="${test.classes.dir}" />
+			
+		<test name="com.mkyong.test.TestMessage" 
+			haltonfailure="no" todir="${report.dir}">
+			<formatter type="plain" />
+			<formatter type="xml" />
+		</test>
+			
+	  </junit>
+	</target>
+
+</project>
