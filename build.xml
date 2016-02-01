@@ -56,7 +56,7 @@
 			
 		<test name="com.mkyong.test.TestMessage" 
 			haltonfailure="no" todir="${report.dir}">
-			<formatter type="plain" />
+			<!--formatter type="plain" /-->
 			<formatter type="xml" />
 		</test>
 			
